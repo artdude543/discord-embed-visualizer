@@ -54,7 +54,7 @@
   "scripts": {
     "build": "rollup -c",
     "start": "react-app-rewired start",
-    "prepublish": "build"
+    "prepare": "npm run-script build"
   },
   "keywords": [
     "react",
