@@ -1,0 +1,10 @@
+# Dependency directory
+node_modules
+.vscode
+.yarnrc
+
+# Other
+.eslintcache
+
+# Dist
+js/

@@ -1,0 +1,79 @@
+{
+  "name": "discord-embed-visualizer",
+  "version": "0.0.1-beta.1",
+  "main": "js/index.js",
+  "module": "js/index.esm.js",
+  "author": "Kieron Richardson <artdude543@hotmail.co.uk>",
+  "contributors": [
+    {
+      "email": "dev@mrv.dog",
+      "name": "Vinny Benson",
+      "url": "https://mrv.dog"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@emotion/react": "^11.1.2",
+    "@emotion/styled": "^11.0.0",
+    "@material-ui/core": "5.0.0-alpha.18",
+    "@material-ui/icons": "5.0.0-alpha.15",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@types/debounce": "^1.2.0",
+    "@types/json5": "^0.0.30",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-syntax-highlighter": "^13.5.0",
+    "react": "^17.0.1",
+    "react-app-rewired": "^2.1.7",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.1",
+    "rollup": "^2.34.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "@material-ui/pickers": "^4.0.0-alpha.12",
+    "date-fns": "^2.16.1",
+    "debounce": "^1.2.0",
+    "material-ui-color": "^0.4.6",
+    "material-ui-popup-state": "^1.7.1",
+    "prop-types": "^15.7.2",
+    "react-markdown": "^5.0.3",
+    "react-syntax-highlighter": "^15.4.3",
+    "remark-gfm": "^1.0.0",
+    "styled-components": "^5.2.1"
+  },
+  "peerDependencies": {
+    "@material-ui/core": "5.0.0-alpha.18",
+    "@material-ui/icons": "5.0.0-alpha.15",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "react-app-rewired start",
+    "prepublish": "build"
+  },
+  "keywords": [
+    "react",
+    "material",
+    "material-ui",
+    "discord",
+    "discord-embed",
+    "generator"
+  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
