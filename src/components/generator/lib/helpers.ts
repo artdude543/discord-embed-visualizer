@@ -12,8 +12,8 @@ export const generateExport = (exporter: ExporterType, data: IEmbed) => {
                 type: 'rich',
                 description: data.body?.description,
                 url: data.body?.url,
-                timestamp: new Date(data.footer.timestamp).toISOString(),
-                color: Number(`0x${data.color.charAt(0) === '#' ? data.color.slice(1) : data.color}`),
+                timestamp: new Date(data.footer?.timestamp || new Date()).toISOString(),
+                color: data.color != null ? Number(`0x${data.color.charAt(0) === '#' ? data.color.slice(1) : data.color}`) : Number('0xfff'),
                 footer: {
                     text: data.footer?.text,
                     icon_url: data.footer?.iconUrl,

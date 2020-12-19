@@ -113,19 +113,53 @@ const renderers = {
     },
 };
 
+function setDefaults(incoming: Partial<IEmbed>): IEmbed {
+    return {
+        author: {
+            name: incoming.author != null && incoming.author.name != null ? incoming.author.name : '',
+            iconUrl: incoming.author != null && incoming.author.iconUrl != null ? incoming.author.iconUrl : '',
+            url: incoming.author != null && incoming.author.url != null ? incoming.author.url : '',
+        },
+        body: {
+            title: incoming.body != null && incoming.body.title != null ? incoming.body.title : '',
+            description: incoming.body != null && incoming.body.description != null ? incoming.body.description : '',
+            url: incoming.body != null && incoming.body.url != null ? incoming.body.url : '',
+        },
+        color: incoming.color != null && incoming.color != null ? incoming.color : '#fff',
+        fields: incoming.fields != null ? incoming.fields : [],
+        image: {
+            url: incoming.image != null && incoming.image.url != null ? incoming.image.url : '',
+            width: incoming.image != null && incoming.image.url != null ? incoming.image.width : 0,
+            height: incoming.image != null && incoming.image.url != null ? incoming.image.height : 0,
+        },
+        thumbnail: {
+            url: incoming.thumbnail != null && incoming.thumbnail.url != null ? incoming.thumbnail.url : '',
+            width: incoming.thumbnail != null && incoming.thumbnail.url != null ? incoming.thumbnail.width : 0,
+            height: incoming.thumbnail != null && incoming.thumbnail.url != null ? incoming.thumbnail.height : 0,
+        },
+        footer: {
+            iconUrl: incoming.footer != null && incoming.footer.iconUrl != null ? incoming.footer.iconUrl : '',
+            text: incoming.footer != null && incoming.footer.text != null ? incoming.footer.text : '',
+            timestamp: incoming.footer != null && incoming.footer.timestamp != null ? incoming.footer.timestamp : undefined,
+        },
+    };
+}
+
 function Generator(props: IProps) {
     const { defaultValue, onChange } = props;
+
+    const defaultWithSet = setDefaults(defaultValue);
 
     const [ expanded, setExpanded ] = useState<string | boolean>(false);
     const [ fieldExpanded, setFieldExpanded ] = useState<string | boolean>(false);
 
-    const [ author, setAuthor ] = useState<IAuthor>({ ...defaultValue?.author });
-    const [ body, setBody ] = useState<IBody>({ ...defaultValue?.body });
-    const [ color, setColor ] = useState<string>(defaultValue?.color);
-    const [ fields, setFields ] = useState<IField[]>(defaultValue?.fields);
-    const [ image, setImage ] = useState<IImage>({ ...defaultValue?.image });
-    const [ thumbnail, setThumbnail ] = useState<IImage>({ ...defaultValue?.thumbnail });
-    const [ footer, setFooter ] = useState<IFooter>({ ...defaultValue?.footer });
+    const [ author, setAuthor ] = useState<IAuthor>({ ...defaultWithSet?.author });
+    const [ body, setBody ] = useState<IBody>({ ...defaultWithSet?.body });
+    const [ color, setColor ] = useState<string>(defaultWithSet?.color);
+    const [ fields, setFields ] = useState<IField[]>(defaultWithSet?.fields);
+    const [ image, setImage ] = useState<IImage>({ ...defaultWithSet?.image });
+    const [ thumbnail, setThumbnail ] = useState<IImage>({ ...defaultWithSet?.thumbnail });
+    const [ footer, setFooter ] = useState<IFooter>({ ...defaultWithSet?.footer });
 
     const [ copied, setCopied ] = useState<boolean>(false);
     const [ showExport, setShowExport ] = useState<boolean>(false);
@@ -236,9 +270,9 @@ function Generator(props: IProps) {
                                     <TextField
                                         value={ author.name }
                                         onChange={ evnt => setAuthor(preValues => { return { ...preValues, name: String(evnt.target.value)}}) }
-                                        label={ `Author ${author.name.length}/256` }
+                                        label={ `Author ${author.name?.length || 0}/256` }
                                         fullWidth
-                                        error={ author.name.length >= 256 }
+                                        error={ (author.name?.length || 0) >= 256 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 6 }>
@@ -272,19 +306,19 @@ function Generator(props: IProps) {
                                     <TextField
                                         value={ body.title }
                                         onChange={ evnt => setBody(preValues => { return { ...preValues, title: String(evnt.target.value)}}) }
-                                        label={ `Title ${body.title.length}/256` }
+                                        label={ `Title ${body.title?.length || 0}/256` }
                                         fullWidth
-                                        error={ body.title.length >= 256 }
+                                        error={ (body.title?.length || 0) >= 256 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 12 }>
                                     <TextField
                                         value={ body.description }
                                         onChange={ evnt => setBody(preValues => { return { ...preValues, description: String(evnt.target.value)}}) }
-                                        label={ `Description ${body.description.length}/2048` }
+                                        label={ `Description ${body.description?.length || 0}/2048` }
                                         helperText="Supports Discord Markdown Formatting"
                                         fullWidth
-                                        error={ body.description.length >= 2048 }
+                                        error={ (body.description?.length || 0) >= 2048 }
                                         multiline
                                         rows={ 6 }
                                     />
@@ -323,7 +357,7 @@ function Generator(props: IProps) {
                             <Grid container className={ classes.fieldRoot }>
                                 <Grid item xs={ 12 }>
                                     {
-                                        fields.map((field, index) => (
+                                        fields != null && fields.map((field, index) => (
                                             <Accordion key={ `field-${index}` } expanded={ fieldExpanded === `field-${index}` } onChange={ handleFieldAccordian(`field-${index}`) }>
                                                 <AccordionSummary expandIcon={ <ExpandMoreIcon /> }>
                                                     <Typography variant="body1">Field { index + 1 } -- { field.name }</Typography>
@@ -434,7 +468,7 @@ function Generator(props: IProps) {
                                     }
                                 </Grid>
                             </Grid>
-                            <Button variant="contained" onClick={ handleFieldAdd } disabled={ fields.length === 25 }>Add Field</Button>
+                            <Button variant="contained" onClick={ handleFieldAdd } disabled={ fields != null ? fields.length === 25 : false }>Add Field</Button>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion expanded={ expanded === 'image' } onChange={ handleAccordian('image') }>
@@ -524,9 +558,9 @@ function Generator(props: IProps) {
                                     <TextField
                                         value={ footer.text }
                                         onChange={ evnt => setFooter(preValues => { return { ...preValues, text: String(evnt.target.value)}}) }
-                                        label={ `Footer ${body.title.length}/256` }
+                                        label={ `Footer ${body.title?.length || 0}/256` }
                                         fullWidth
-                                        error={ body.title.length >= 256 }
+                                        error={ (body.title?.length || 0) >= 256 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 6 }>
