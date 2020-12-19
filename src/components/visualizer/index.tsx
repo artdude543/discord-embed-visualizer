@@ -34,8 +34,8 @@ function Visualizer(props: IProps) {
                 <Paper className={ visualizerClasses.message }>
                     {/* Bot User */}
                     <div className={ visualizerClasses.title }>
-                        <img className={ visualizerClasses.avatar } src={ bot?.iconUrl || 'https://static-cdn.jtvnw.net/jtv_user_pictures/52779398-2481-4700-9648-b94ed5240781-profile_image-70x70.png' } />
-                        <h1 className={ visualizerClasses.username }>{ bot?.name || 'BeepBot' }</h1>
+                        <img className={ visualizerClasses.avatar } src={ bot.iconUrl } />
+                        <h1 className={ visualizerClasses.username }>{ bot.name }</h1>
                         <span className={ visualizerClasses.botBadge }>BOT</span>
                     </div>
                     <Paper
@@ -61,25 +61,17 @@ function Visualizer(props: IProps) {
                             }
                             
                             {/* Body */}
-                            {
-                                embed.body != null && (
-                                    <span className={ embedClasses.body }>
-                                        <div className={ embedClasses.title }>
-                                            { embed.body.url
-                                                ? <Link className={ embedClasses.url } href={ embed.body.url }>{ embed.body.title }</Link>
-                                                : embed.body.title
-                                            }
-                                        </div>
-                                    </span>
-                                )
-                            }
-                            {
-                                embed.body != null && (
-                                    <div className={ embedClasses.description }>
-                                        <ReactMarkdown plugins={[ gfm ]}>{ embed.body.description }</ReactMarkdown>
-                                    </div>
-                                )
-                            }
+                            <span className={ embedClasses.body }>
+                                <div className={ embedClasses.title }>
+                                    { embed.url
+                                        ? <Link className={ embedClasses.url } href={ embed.url }>{ embed.title }</Link>
+                                        : embed.title
+                                    }
+                                </div>
+                            </span>
+                            <div className={ embedClasses.description }>
+                                <ReactMarkdown plugins={[ gfm ]}>{ embed.description }</ReactMarkdown>
+                            </div>
                             {/* Field */}
                             {
                                 embed.fields != null && (
@@ -114,7 +106,7 @@ function Visualizer(props: IProps) {
                                     <div className={ authorAndFooterClasses.root }>
                                         { embed.footer.iconUrl && <img className={ authorAndFooterClasses.icon } src={ embed.footer.iconUrl } /> }
                                         { embed.footer.text }
-                                        { embed.footer.timestamp && <span>&nbsp;&bull;&nbsp;{ format(new Date(embed.footer?.timestamp || new Date()), "dd/MM/yyyy") }</span> }
+                                        { embed.timestamp && <span>&nbsp;&bull;&nbsp;{ format(new Date(embed.timestamp || new Date()), "dd/MM/yyyy") }</span> }
                                     </div>
                                 )
                             }
@@ -139,7 +131,19 @@ function Visualizer(props: IProps) {
 }
 
 Visualizer.propTypes = {
+    bot: PropTypes.exact({
+        name: PropTypes.string,
+        iconUrl: PropTypes.string,
+    }),
     embed: PropTypes.object.isRequired,
+};
+
+Visualizer.defaultProps = {
+    bot: {
+        name: 'BeepBot',
+        iconUrl: 'https://static-cdn.jtvnw.net/jtv_user_pictures/52779398-2481-4700-9648-b94ed5240781-profile_image-70x70.png',
+    },
+    embed: {},
 };
 
 export {

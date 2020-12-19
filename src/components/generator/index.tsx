@@ -51,7 +51,6 @@ export interface IBody {
 export interface IFooter {
     iconUrl: string;
     text: string;
-    timestamp: string;
 }
 
 export interface IField {
@@ -66,18 +65,20 @@ export interface IImage {
     height: number;
 }
 
-export interface IEmbed {
+export interface IEmbed extends IBody {
     author: IAuthor;
-    body: IBody;
     color: string;
     fields: IField[];
     image: IImage;
     thumbnail: IImage;
+    timestamp: string;
     footer: IFooter;
 }
 
 interface IProps {
     defaultValue: IEmbed;
+    showExportSection?: boolean;
+
     onChange: (data: IEmbed) => void;
 }
 
@@ -120,13 +121,13 @@ function setDefaults(incoming: Partial<IEmbed>): IEmbed {
             iconUrl: incoming.author != null && incoming.author.iconUrl != null ? incoming.author.iconUrl : '',
             url: incoming.author != null && incoming.author.url != null ? incoming.author.url : '',
         },
-        body: {
-            title: incoming.body != null && incoming.body.title != null ? incoming.body.title : '',
-            description: incoming.body != null && incoming.body.description != null ? incoming.body.description : '',
-            url: incoming.body != null && incoming.body.url != null ? incoming.body.url : '',
-        },
         color: incoming.color != null && incoming.color != null ? incoming.color : '#fff',
+        description: incoming.description != null ? incoming.description : '',
         fields: incoming.fields != null ? incoming.fields : [],
+        footer: {
+            iconUrl: incoming.footer != null && incoming.footer.iconUrl != null ? incoming.footer.iconUrl : '',
+            text: incoming.footer != null && incoming.footer.text != null ? incoming.footer.text : '',
+        },
         image: {
             url: incoming.image != null && incoming.image.url != null ? incoming.image.url : '',
             width: incoming.image != null && incoming.image.url != null ? incoming.image.width : 0,
@@ -137,16 +138,14 @@ function setDefaults(incoming: Partial<IEmbed>): IEmbed {
             width: incoming.thumbnail != null && incoming.thumbnail.url != null ? incoming.thumbnail.width : 0,
             height: incoming.thumbnail != null && incoming.thumbnail.url != null ? incoming.thumbnail.height : 0,
         },
-        footer: {
-            iconUrl: incoming.footer != null && incoming.footer.iconUrl != null ? incoming.footer.iconUrl : '',
-            text: incoming.footer != null && incoming.footer.text != null ? incoming.footer.text : '',
-            timestamp: incoming.footer != null && incoming.footer.timestamp != null ? incoming.footer.timestamp : undefined,
-        },
+        timestamp: incoming.timestamp != null ? incoming.timestamp : undefined,
+        title: incoming.title != null ? incoming.title : '',
+        url: incoming.url != null ? incoming.url : '',
     };
 }
 
 function Generator(props: IProps) {
-    const { defaultValue, onChange } = props;
+    const { defaultValue, showExportSection, onChange } = props;
 
     const defaultWithSet = setDefaults(defaultValue);
 
@@ -154,12 +153,15 @@ function Generator(props: IProps) {
     const [ fieldExpanded, setFieldExpanded ] = useState<string | boolean>(false);
 
     const [ author, setAuthor ] = useState<IAuthor>({ ...defaultWithSet?.author });
-    const [ body, setBody ] = useState<IBody>({ ...defaultWithSet?.body });
     const [ color, setColor ] = useState<string>(defaultWithSet?.color);
+    const [ description, setDescription ] = useState<string>(defaultWithSet?.description);
     const [ fields, setFields ] = useState<IField[]>(defaultWithSet?.fields);
+    const [ footer, setFooter ] = useState<IFooter>({ ...defaultWithSet?.footer });
     const [ image, setImage ] = useState<IImage>({ ...defaultWithSet?.image });
     const [ thumbnail, setThumbnail ] = useState<IImage>({ ...defaultWithSet?.thumbnail });
-    const [ footer, setFooter ] = useState<IFooter>({ ...defaultWithSet?.footer });
+    const [ timestamp, setTimestamp ] = useState<string>(defaultWithSet?.timestamp);
+    const [ title, setTitle ] = useState<string>(defaultWithSet?.title);
+    const [ url, setUrl ] = useState<string>(defaultWithSet?.url);
 
     const [ copied, setCopied ] = useState<boolean>(false);
     const [ showExport, setShowExport ] = useState<boolean>(false);
@@ -194,7 +196,7 @@ function Generator(props: IProps) {
         setFields(fieldsClone);
     };
     
-    const exportedData = generateExport(exporter, { author, body, color, fields, footer, image, thumbnail });
+    const exportedData = generateExport(exporter, { author, color, description, fields, footer, image, thumbnail, timestamp, title, url });
     const handleExport = () => setShowExport(true);
 
     const sendChanges = debounce(onChange, 300);
@@ -203,13 +205,13 @@ function Generator(props: IProps) {
         let isLoaded = true;
 
         if (isLoaded && onChange != null) {
-            sendChanges({ author, body, color, fields, footer, image, thumbnail });
+            sendChanges({ author, color, description, fields, footer, image, thumbnail, timestamp, title, url });
         }
 
         return () => {
             isLoaded = false;
         }
-    }, [ author, body, color, fields, footer, image, thumbnail ]);
+    }, [ author, color, description, fields, footer, image, thumbnail, timestamp, title, url ]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -304,29 +306,29 @@ function Generator(props: IProps) {
                             <Grid container spacing={ 2 }>
                                 <Grid item xs={ 12 }>
                                     <TextField
-                                        value={ body.title }
-                                        onChange={ evnt => setBody(preValues => { return { ...preValues, title: String(evnt.target.value)}}) }
-                                        label={ `Title ${body.title?.length || 0}/256` }
+                                        value={ title }
+                                        onChange={ evnt => setTitle(String(evnt.target.value)) }
+                                        label={ `Title ${title?.length || 0}/256` }
                                         fullWidth
-                                        error={ (body.title?.length || 0) >= 256 }
+                                        error={ (title?.length || 0) >= 256 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 12 }>
                                     <TextField
-                                        value={ body.description }
-                                        onChange={ evnt => setBody(preValues => { return { ...preValues, description: String(evnt.target.value)}}) }
-                                        label={ `Description ${body.description?.length || 0}/2048` }
+                                        value={ description }
+                                        onChange={ evnt => setDescription(String(evnt.target.value)) }
+                                        label={ `Description ${description?.length || 0}/2048` }
                                         helperText="Supports Discord Markdown Formatting"
                                         fullWidth
-                                        error={ (body.description?.length || 0) >= 2048 }
+                                        error={ (description?.length || 0) >= 2048 }
                                         multiline
                                         rows={ 6 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 6 }>
                                     <TextField
-                                        value={ body.url }
-                                        onChange={ evnt => setBody(preValues => { return { ...preValues, url: String(evnt.target.value)}}) }
+                                        value={ url }
+                                        onChange={ evnt => setUrl(String(evnt.target.value)) }
                                         label="URL"
                                         helperText="This will make the title clickable."
                                         fullWidth
@@ -558,14 +560,14 @@ function Generator(props: IProps) {
                                     <TextField
                                         value={ footer.text }
                                         onChange={ evnt => setFooter(preValues => { return { ...preValues, text: String(evnt.target.value)}}) }
-                                        label={ `Footer ${body.title?.length || 0}/256` }
+                                        label={ `Footer ${footer.text?.length || 0}/256` }
                                         fullWidth
-                                        error={ (body.title?.length || 0) >= 256 }
+                                        error={ (footer.text?.length || 0) >= 256 }
                                     />
                                 </Grid>
                                 <Grid item xs={ 6 }>
                                     <TextField
-                                        value={ body.url }
+                                        value={ footer.iconUrl }
                                         onChange={ evnt => setFooter(preValues => { return { ...preValues, iconUrl: String(evnt.target.value)}}) }
                                         label="Footer Icon URL"
                                         helperText="Full path to an icon to use on the footer."
@@ -575,10 +577,10 @@ function Generator(props: IProps) {
                                 <Grid item xs={ 6 }>
                                     <DateTimePicker
                                         renderInput={ props => <TextField fullWidth { ...props } />}
-                                        value={ footer.timestamp }
+                                        value={ timestamp }
                                         onChange={ date => {
                                             if (date != null) {
-                                                setFooter(preValues=> { return { ...preValues, timestamp: new Date(date).toString() } });
+                                                setTimestamp(new Date(date).toString());
                                             }
                                         }}
                                         label="Timestamp"
@@ -587,23 +589,27 @@ function Generator(props: IProps) {
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
-                    <Accordion expanded={ expanded === 'export' } onChange={ handleAccordian('export') }>
-                        <AccordionSummary expandIcon={ <ExpandMoreIcon /> }>
-                            <Typography variant="h5">Export</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={ 2 }>
-                                <Grid item xs={ 6 }>
-                                    <Select fullWidth value={ exporter } onChange={ evnt => setExporter(evnt.target.value) }>
-                                        <MenuItem value="discordjs">Discord.js</MenuItem>
-                                    </Select>
-                                </Grid>
-                                <Grid item xs={ 6 }>
-                                    <Button variant="contained" onClick={ handleExport }>Export</Button>
-                                </Grid>
-                            </Grid>
-                        </AccordionDetails>
-                    </Accordion>
+                    {
+                        showExportSection && (
+                            <Accordion expanded={ expanded === 'export' } onChange={ handleAccordian('export') }>
+                                <AccordionSummary expandIcon={ <ExpandMoreIcon /> }>
+                                    <Typography variant="h5">Export</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Grid container spacing={ 2 }>
+                                        <Grid item xs={ 6 }>
+                                            <Select fullWidth value={ exporter } onChange={ evnt => setExporter(evnt.target.value) }>
+                                                <MenuItem value="discordjs">Discord.js</MenuItem>
+                                            </Select>
+                                        </Grid>
+                                        <Grid item xs={ 6 }>
+                                            <Button variant="contained" onClick={ handleExport }>Export</Button>
+                                        </Grid>
+                                    </Grid>
+                                </AccordionDetails>
+                            </Accordion>
+                        )
+                    }
                 </div>
             </LocalizationProvider>
         </ThemeProvider>
@@ -612,7 +618,14 @@ function Generator(props: IProps) {
 
 Generator.propTypes = {
     defaultValue: PropTypes.object.isRequired,
+    export: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+};
+
+Generator.defaultProps = {
+    defaultValue: {},
+    showExportSection: true,
+    onChange: null,
 };
 
 export {
