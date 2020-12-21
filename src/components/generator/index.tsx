@@ -37,42 +37,42 @@ import { Accordion, AccordionDetails, AccordionSummary } from './components/expa
 import { copyToClipBoard, ExporterType, generateExport } from './lib/helpers';
 
 export interface IAuthor {
-    name: string;
-    iconUrl: string;
-    url: string;
+    name?: string;
+    iconUrl?: string;
+    url?: string;
 }
 
 export interface IBody {
-    title: string;
-    description: string;
-    url: string;
+    title?: string;
+    description?: string;
+    url?: string;
 }
 
 export interface IFooter {
-    iconUrl: string;
+    iconUrl?: string;
     text: string;
 }
 
 export interface IField {
     name: string;
     value: string;
-    inline: boolean;
+    inline?: boolean;
 }
 
 export interface IImage {
-    url: string;
-    width: number;
-    height: number;
+    url?: string;
+    width?: number;
+    height?: number;
 }
 
 export interface IEmbed extends IBody {
-    author: IAuthor;
-    color: string;
-    fields: IField[];
-    image: IImage;
-    thumbnail: IImage;
-    timestamp: string;
-    footer: IFooter;
+    author?: IAuthor;
+    color?: string;
+    fields?: IField[];
+    image?: IImage;
+    thumbnail?: IImage;
+    timestamp?: string;
+    footer?: IFooter;
 }
 
 interface IProps {
