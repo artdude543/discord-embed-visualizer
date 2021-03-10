@@ -20,16 +20,14 @@ const DemoDefaults: IEmbed = {
         url: 'https://beepbot.app',
         iconUrl: 'https://beepbot.app/img/favicon-32x32.png',
     },
-    body: {
-        title: 'My Awesome Day Out',
-        description: '## Testing\n This is a message on another line?',
-        url: '',
-    },
+    title: 'My Awesome Day Out',
+    description: '## Testing\n This is a message on another line?',
+    url: '',
+    timestamp: '2020-12-10T00:00:00.000Z',
     color: '#fff',
     footer: {
         iconUrl: 'https://beepbot.app/img/favicon-32x32.png',
         text: 'via BeepBot \\o\/',
-        timestamp: '2020-12-10T00:00:00.000Z'
     },
     image: {
         width: 250,
