@@ -37,7 +37,7 @@
     "@material-ui/pickers": "^4.0.0-alpha.12",
     "date-fns": "^2.16.1",
     "debounce": "^1.2.0",
-    "material-ui-color": "^0.4.6",
+    "material-ui-color": "^0.4.11",
     "material-ui-popup-state": "^1.7.1",
     "prop-types": "^15.7.2",
     "react-markdown": "^5.0.3",
