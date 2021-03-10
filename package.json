@@ -1,6 +1,6 @@
 {
   "name": "discord-embed-visualizer",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "main": "js/index.js",
   "module": "js/index.esm.js",
   "author": "Kieron Richardson <artdude543@hotmail.co.uk>",
