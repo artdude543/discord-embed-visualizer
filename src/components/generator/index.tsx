@@ -587,7 +587,7 @@ function Generator(props: IProps) {
                         )
                     }
                     {
-                        shouldHideFields['footer'] === true && (
+                        shouldHideFields['footer'] === false && (
                             <Accordion expanded={ expanded === 'footer' } onChange={ handleAccordian('footer') }>
                                 <AccordionSummary expandIcon={ <ExpandMoreIcon /> }>
                                     <Typography variant="h5">Footer</Typography>
