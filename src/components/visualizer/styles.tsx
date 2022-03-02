@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 
 export const visualizerStyles = makeStyles({
     root: {
@@ -117,7 +117,7 @@ export const authorAndFooterStyles = makeStyles({
     },
 });
 
-export const fieldStyles = makeStyles(theme => ({
+export const fieldStyles = makeStyles((theme: any) => ({
     root: {
         // minWidth: '0px',
         // margin: '8px 0px 0px',

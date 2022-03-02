@@ -1,17 +1,29 @@
-import { createMuiTheme, Grid, ThemeProvider } from '@material-ui/core';
-import green from '@material-ui/core/colors/green';
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Generator, Visualizer } from '.';
+import green from '@mui/material/colors/green';
+import Grid from '@mui/material/Grid/Grid';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+
+import { Generator, Visualizer } from './';
 import { IEmbed } from './components/generator';
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
         primary: {
             main: green[500],
         },
-    }
+    },
+    components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#36393f',
+                },
+            },
+        },
+    },
 });
 
 const DemoDefaults: IEmbed = {
@@ -58,7 +70,7 @@ function App() {
     const [ data, setData ] = useState<IEmbed>(DemoDefaults);
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={ theme }>
             <Grid container spacing={1}>
                 <Grid item xs={6}>
                     <Generator defaultValue={ DemoDefaults } onChange={ setData } />
