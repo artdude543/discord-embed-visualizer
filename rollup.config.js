@@ -37,6 +37,7 @@ const external = [
     '@mui/material/Link/Link',
     '@mui/material/Paper/Paper',
     '@mui/material/Paper/Paper',
+    '@mui/material/styles/createTheme',
 
     // Other
     'react/jsx-runtime',
