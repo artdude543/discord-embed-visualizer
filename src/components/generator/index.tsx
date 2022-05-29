@@ -11,7 +11,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DateFnsUtils from '@mui/lab/AdapterDateFns';
-import DateTimePicker from '@mui/lab/DateTimePicker/DateTimePicker';
+import {DateTimePicker} from '@mui/lab/';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Button from '@mui/material/Button/Button';
 import green from '@mui/material/colors/green';
