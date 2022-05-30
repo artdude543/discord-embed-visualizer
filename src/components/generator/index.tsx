@@ -118,8 +118,9 @@ const styles = makeStyles((theme: any) => ({
     },
 }));
 
+const matDark = materialDark as any;
 const renderers: Components = {
-    code: ({ ...props }) => <SyntaxHighlighter style={ materialDark } { ...props } />,
+    code: ({ node, inline, className, children, ...props }) => <SyntaxHighlighter children={String(children).replace(/\n$/, '')} language="json" PreTag="div" style={ matDark  } { ...props } />,
 };
 
 function setEmbedDefaults(incoming: Partial<IEmbed>): IEmbed {

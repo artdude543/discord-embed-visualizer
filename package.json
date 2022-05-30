@@ -22,7 +22,7 @@
     "@types/json5": "^2.2.0",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
-    "@types/react-syntax-highlighter": "^13.5.2",
+    "@types/react-syntax-highlighter": "^15.5.1",
     "react": "^17.0.2",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^17.0.2",
@@ -39,7 +39,7 @@
     "material-ui-popup-state": "^2.0.0",
     "mui-color": "^2.0.0-beta.2",
     "prop-types": "^15.8.1",
-    "react-markdown": "^8.0.1",
+    "react-markdown": "^8.0.3",
     "react-syntax-highlighter": "^15.5.0",
     "remark-gfm": "^3.0.1"
   },
@@ -48,6 +48,9 @@
     "@mui/material": "^5.5.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
+  },
+  "resolutions": {
+    "react-syntax-highlighter/highlight.js": "10.7.2"
   },
   "scripts": {
     "build": "rollup -c",
