@@ -28,11 +28,11 @@ interface IProps {
 function Visualizer(props: IProps) {
     const { bot, embed } = props;
 
-    const authorAndFooterClasses = authorAndFooterStyles();
-    const embedClasses = embedStyles();
-    const fieldClasses = fieldStyles();
-    const imageClasses = imageStyles();
-    const visualizerClasses = visualizerStyles();
+    const authorAndFooterClasses = authorAndFooterStyles().classes;
+    const embedClasses = embedStyles().classes;
+    const fieldClasses = fieldStyles().classes;
+    const imageClasses = imageStyles().classes;
+    const visualizerClasses = visualizerStyles().classes;
 
     return (
         <ThemeProvider theme={ theme }>
@@ -49,7 +49,7 @@ function Visualizer(props: IProps) {
                             elevation={ 0 }
                             className={ embedClasses.root }
                             style={{
-                                borderLeftColor: `#${embed?.color}` || green[500],
+                                borderLeftColor: `#${embed?.color.charAt(0) === '#' ? embed?.color.substring(1) : embed.color}` || green[500],
                                 display: 'grid',
                             }}
                         >

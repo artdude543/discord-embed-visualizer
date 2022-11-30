@@ -1,6 +1,6 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from 'tss-react/mui';
 
-export const visualizerStyles = makeStyles({
+export const visualizerStyles = makeStyles({ name: 'VisualizerStyles' })({
     root: {
         fontFamily: 'Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif',
     },
@@ -55,7 +55,7 @@ export const visualizerStyles = makeStyles({
     },
 });
 
-export const embedStyles = makeStyles({
+export const embedStyles = makeStyles({ name: 'EmbedStyles' })({
     root: {
         maxWidth: '520px',
         borderLeftWidth: '4px',
@@ -92,7 +92,7 @@ export const embedStyles = makeStyles({
     },
 });
 
-export const authorAndFooterStyles = makeStyles({
+export const authorAndFooterStyles = makeStyles({ name: 'AuthorFooterStyles' })({
     root: {
         fontSize: '0.875rem',
         fontWeight: 500,
@@ -117,7 +117,7 @@ export const authorAndFooterStyles = makeStyles({
     },
 });
 
-export const fieldStyles = makeStyles((theme: any) => ({
+export const fieldStyles = makeStyles({ name: 'FieldStyles' })((theme: any) => ({
     root: {
         // minWidth: '0px',
         // margin: '8px 0px 0px',
@@ -162,7 +162,7 @@ export const fieldStyles = makeStyles((theme: any) => ({
     },
 }));
 
-export const imageStyles = makeStyles({
+export const imageStyles = makeStyles({ name: 'ImageStyles' })({
     root: {
         gridColumn: '1 / 2',
         display: 'grid',

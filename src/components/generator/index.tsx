@@ -1,18 +1,16 @@
 import debounce from 'debounce';
-import { ColorPicker } from 'mui-color';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 import ReactMarkdown, { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import gfm from 'remark-gfm';
+import { makeStyles } from 'tss-react/mui';
 
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { DateTimePicker } from '@mui/lab';
-import DateFnsUtils from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import Button from '@mui/material/Button/Button';
 import green from '@mui/material/colors/green';
 import Dialog from '@mui/material/Dialog/Dialog';
@@ -31,7 +29,9 @@ import Switch from '@mui/material/Switch/Switch';
 import TextField from '@mui/material/TextField/TextField';
 import Tooltip from '@mui/material/Tooltip/Tooltip';
 import Typography from '@mui/material/Typography/Typography';
-import { makeStyles } from '@mui/styles';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import { theme } from '../shared';
 import { Accordion, AccordionDetails, AccordionSummary } from './components/expansion';
@@ -92,35 +92,47 @@ interface IProps {
     onChange: (data: IEmbed) => void;
 }
 
-const styles = makeStyles((theme: any) => ({
-    buttonGroup: {
-        position: 'absolute',
-        right: 60,
-        paddingRight: 8,
-        top: 4,
-    },
-    controlPadding: {
-        paddingTop: `${theme.spacing(2)} !important`,
-    },
-    fieldRoot: {
-        paddingBottom: theme.spacing(2),
-    },
-    exportField: {
-        userSelect: 'none',
-        margin: '-8px 0 -12px 0',
-
-        '& > div::before': {
-            display: 'none',
+const styles = makeStyles()(
+    (theme => ({
+        buttonGroup: {
+            position: 'absolute',
+            right: 60,
+            paddingRight: 8,
+            top: 4,
         },
-        '& > pre': {
-            overflow: 'hidden !important',
+        controlPadding: {
+            paddingTop: `${theme.spacing(2)} !important`,
         },
-    },
-}));
+        fieldRoot: {
+            paddingBottom: theme.spacing(2),
+        },
+        exportField: {
+            userSelect: 'none',
+            margin: '-8px 0 -12px 0',
+    
+            '& > div::before': {
+                display: 'none',
+            },
+            '& > pre': {
+                overflow: 'hidden !important',
+            },
+        },
+    })),
+);
 
 const matDark = materialDark as any;
 const renderers: Components = {
-    code: ({ node, inline, className, children, ...props }) => <SyntaxHighlighter children={String(children).replace(/\n$/, '')} language="json" PreTag="div" style={ matDark  } { ...props } />,
+    code: ({ node, inline, className, children, ...props }) => {
+        const match = /language-(\w+)/.exec(className || '');
+
+        return !inline && match ? (
+            <SyntaxHighlighter style={ matDark } language={ match[1] } PreTag="div" { ...props } children={ String(children).replace(/\n$/, '') } />
+        ) : (
+            <code className={className} {...props}>
+                {children}
+            </code>
+        );
+    },
 };
 
 function setEmbedDefaults(incoming: Partial<IEmbed>): IEmbed {
@@ -187,7 +199,7 @@ function Generator(props: IProps) {
     const [ showExport, setShowExport ] = useState<boolean>(false);
     const [ exporter, setExporter ] = useState<ExporterType>('discordjs');
 
-    const classes = styles();
+    const { classes } = styles();
 
     const handleAccordian = (panel: string)  => (_evnt: React.ChangeEvent<{}>, isExpanded: boolean) => setExpanded(isExpanded ? panel : false);
     const handleFieldAccordian = (panel: string)  => (_evnt: React.ChangeEvent<{}>, isExpanded: boolean) => setFieldExpanded(isExpanded ? panel : false);
@@ -244,7 +256,7 @@ function Generator(props: IProps) {
     return (
         <ThemeProvider theme={ theme }>
             <StyledEngineProvider injectFirst>
-                <LocalizationProvider dateAdapter={ DateFnsUtils }>
+                <LocalizationProvider dateAdapter={ AdapterDateFns }>
                     <div>
                         <Dialog open={ showExport } onClose={ (_, reason) => reason !== 'backdropClick' ? setShowExport(false) : undefined } disableEscapeKeyDown maxWidth="md" fullWidth>
                             <DialogTitle>{ exporter } Embed Data</DialogTitle>
@@ -364,10 +376,9 @@ function Generator(props: IProps) {
                                             <Grid item xs={ 6 }>
                                                 <FormControlLabel
                                                     control={
-                                                        <ColorPicker
-                                                            value={ color }
-                                                            onChange={ (newColor: any) => setColor(String(newColor.hex)) } // TypeDef is broken on this one.
-                                                            deferred
+                                                        <HexColorPicker
+                                                            color={ color }
+                                                            onChange={ newColor => setColor(String(newColor)) }
                                                         />
                                                     }
                                                     label="Colour:"

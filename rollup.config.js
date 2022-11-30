@@ -13,8 +13,6 @@ const external = [
     '@mui/icons-material/ExpandLess',
     '@mui/icons-material/ExpandMore',
     '@mui/lab/AdapterDateFns',
-    '@mui/lab/DateTimePicker/DateTimePicker',
-    '@mui/lab/LocalizationProvider',
     '@mui/material/Button/Button',
     '@mui/material/colors/green',
     '@mui/material/Dialog/Dialog',
@@ -36,11 +34,15 @@ const external = [
     '@mui/styles',
     '@mui/material/Link/Link',
     '@mui/material/Paper/Paper',
-    '@mui/material/Paper/Paper',
     '@mui/material/styles/createTheme',
+    '@mui/x-date-pickers/AdapterDateFns',
+    '@mui/x-date-pickers/LocalizationProvider',
+    '@mui/x-date-pickers/DateTimePicker',
 
     // Other
     'react/jsx-runtime',
+    'react-syntax-highlighter/dist/esm/styles/prism',
+    'tss-react/mui',
 ];
 
 const plugins = [
