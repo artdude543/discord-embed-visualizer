@@ -1,9 +1,13 @@
 {
   "name": "discord-embed-visualizer",
   "version": "1.1.0",
-  "main": "js/index.js",
   "module": "js/index.esm.js",
+  "exports": {
+    "import": "./js/index.esm.js"
+  },
+  "types": "./js/src/index.d.ts",
   "author": "Kieron Richardson <artdude543@hotmail.co.uk>",
+  "type": "module",
   "contributors": [
     {
       "email": "dev@mrv.dog",
@@ -53,7 +57,7 @@
     "react-syntax-highlighter/highlight.js": "10.7.2"
   },
   "scripts": {
-    "build": "rollup -c --bundleConfigAsCjs",
+    "build": "rollup -c",
     "start": "react-app-rewired start",
     "prepare": "npm run-script build"
   },
