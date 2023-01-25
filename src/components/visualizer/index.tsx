@@ -16,6 +16,8 @@ import { getFieldGridColumn } from './lib/helpers';
 import {
     authorAndFooterStyles, embedStyles, fieldStyles, imageStyles, visualizerStyles
 } from './styles';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 interface IProps {
     bot?: {
@@ -34,7 +36,12 @@ function Visualizer(props: IProps) {
     const imageClasses = imageStyles().classes;
     const visualizerClasses = visualizerStyles().classes;
 
+    const cache = createCache({
+        key: "tss"
+    });
+
     return (
+        <CacheProvider value={cache}>
         <ThemeProvider theme={ theme }>
             <StyledEngineProvider injectFirst>
                 <div className={ visualizerClasses.root }>
@@ -135,6 +142,7 @@ function Visualizer(props: IProps) {
                 </div>
             </StyledEngineProvider>
         </ThemeProvider>
+        </CacheProvider>
     );
 }
 

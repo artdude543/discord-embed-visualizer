@@ -36,6 +36,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { theme } from '../shared';
 import { Accordion, AccordionDetails, AccordionSummary } from './components/expansion';
 import { copyToClipBoard, ExporterType, generateExport } from './lib/helpers';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 
 export interface IAuthor {
     name?: string;
@@ -253,7 +255,12 @@ function Generator(props: IProps) {
         return () => clearTimeout(timer);
     }, [ copied ]);
 
+    const cache = createCache({
+        key: "tss"
+    });
+
     return (
+        <CacheProvider value={cache}>
         <ThemeProvider theme={ theme }>
             <StyledEngineProvider injectFirst>
                 <LocalizationProvider dateAdapter={ AdapterDateFns }>
@@ -666,6 +673,7 @@ function Generator(props: IProps) {
                 </LocalizationProvider>
             </StyledEngineProvider>
         </ThemeProvider>
+        </CacheProvider>
     );
 }
 
